@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Cadastro</title>
+    <link rel="stylesheet" href="../css/cadastro_user.css">
+</head>
+<body>
+    <div class="form-container">
+        <h2>Formulário de Cadastro</h2>
+        <form id="client_form" action="#">
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" id="nome" name="nome" required autocomplete="off" placeholder="Ex: João">
+            </div>
+            <div class="form-group">
+                <label for="cpf_cnpj">CPF/CNPJ:</label>
+                <input type="text" id="cpf_cnpj" name="cpf_cnpj" required autocomplete="off" placeholder="Ex: 0000000000">
+            </div>
+            <div class="form-group">
+                <label for="endereco">Endereço(rua):</label>
+                <input type="text" id="endereco" name="endereco" required autocomplete="off" placeholder="Ex: Av. Paulista">
+            </div>
+            <div class="form-group">
+                <label for="cidade">Cidade:</label>
+                <input type="text" id="cidade" name="cidade" required autocomplete="off" placeholder="Ex: São Paulo">
+            </div>
+            <div class="form-group">
+                <label for="revenda">Revenda:</label>
+                <input type="text" id="revenda" name="revenda" required autocomplete="off" placeholder="Ex: Órbita">
+            </div>
+            <div class="form-group">
+                <label for="data_validade">Data de Validade:</label>
+                <input type="date" id="data_validade" name="data_validade" required autocomplete="off">
+            </div>
+            <button type="submit" id="add_cliente_btn">Adicionar Cliente</button>
+        </form>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+    <script src="../javascript/firebase.js"></script>
+    <script src="../javascript/cadastro_user.js"></script>
+</body>
+</html>
