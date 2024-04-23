@@ -25,7 +25,8 @@ app.get('/api/informacoes/:cpf', async (req, res) => {
     let userData = [];
 
     snapshot.forEach(doc => {
-    userData.push(doc.data());
+    userData.push(doc.data().cpf_cnpj);
+    userData.push(doc.data().data_validade);
     });
 
     res.json(userData);

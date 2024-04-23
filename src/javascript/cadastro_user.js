@@ -21,6 +21,7 @@ async function teste() {
                 const formData = {};
                 for (let [key, value] of data.entries()) {
                     formData[key] = value;
+                    formData["status"] = "ativo";
                 }
     
                 await clientsRef.add(formData);

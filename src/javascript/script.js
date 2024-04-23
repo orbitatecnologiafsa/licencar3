@@ -52,6 +52,7 @@ async function displayClient() {
 
       const deleteImg = document.createElement('img');
       deleteImg.setAttribute('class','icon');
+      deleteImg.setAttribute('id','deleteImg');
       deleteImg.setAttribute('src','src/images/remove.png');
       deleteImg.setAttribute('onclick', `deleteClient('${doc.data().cpf_cnpj}')`);
 
@@ -64,7 +65,19 @@ async function displayClient() {
       imgDiv.appendChild(deleteImg);
       clienteItem.appendChild(imgDiv);
 
-      clienteLista.appendChild(clienteItem);     
+      if(doc.data().status === 'desativo') {
+        clienteItem.setAttribute('class','desativado');
+        deleteImg.setAttribute('src','src/images/check.png');
+        deleteImg.setAttribute('onclick', `activeClient('${doc.data().cpf_cnpj}')`);
+      }
+      else{
+        clienteItem.setAttribute('class','item-list');
+        deleteImg.setAttribute('src','src/images/remove.png');
+        deleteImg.setAttribute('onclick', `deleteClient('${doc.data().cpf_cnpj}')`);
+      }
+
+      clienteLista.appendChild(clienteItem);   
+        
     });
   } catch(error) {
     console.log("A lista está vazia, erro: " + error);
@@ -98,7 +111,7 @@ function abrirCadastroUser() {
 
 async function deleteClient(cpf_cnpj) {
   
-  if(confirm("Tem certeza que deseja excluir o cliente?")) {
+  if(confirm("Tem certeza que deseja desativar o cliente?")) {
   try {
     const clienteRef = await db.collection('clientes');
     const querySnapshot = await clienteRef.where('cpf_cnpj', '==', cpf_cnpj).get();
@@ -110,20 +123,49 @@ async function deleteClient(cpf_cnpj) {
 
         const docId = doc.id;
         console.log(docId);
-        
-        await db.collection('clientes').doc(docId).delete();
+       
+        const atualizarStatus = await db.collection('clientes').doc(docId).update({status : "desativo"});
+        console.log(atualizarStatus);
           
-        alert("Cliente excluído com sucesso!");
+        alert("Cliente desativado com sucesso!");
     } else {
         console.log('Nenhum documento encontrado.');
     }
       
     window.location.reload();
   } catch (error) {
-    console.error("Ocorreu um erro ao excluir o cliente:", error);
+    console.error("Ocorreu um erro ao desativar o cliente:", error);
     } 
   }
 
+}
+async function activeClient(cpf_cnpj) {
+
+  if(confirm("Tem certeza que deseja ativar o cliente?")) {
+  try {
+    const clienteRef = await db.collection('clientes');
+    const querySnapshot = await clienteRef.where('cpf_cnpj', '==', cpf_cnpj).get();
+    console.log(cpf_cnpj)
+              
+    if (!querySnapshot.empty) {
+        
+        const doc = querySnapshot.docs[0];
+        const docId = doc.id;
+        console.log(docId);
+        
+        const atualizarStatus = await db.collection('clientes').doc(docId).update({status : "ativo"});
+        console.log(atualizarStatus);
+          
+        alert("Cliente ativado com sucesso!");
+    }else {
+      console.log('Nenhum documento encontrado.');
+    }
+    
+    window.location.reload();
+  } catch (error) {
+    console.error("Ocorreu um erro ao ativar o cliente:", error);
+    }
+  }
 }
 function editClient(cpf_cnpj) {
   var width = 800;
