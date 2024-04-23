@@ -32,7 +32,6 @@ async function exibir_info(){
 
 async function editar_user() {
     try {
-        const firebasecpf = getCpf('cpf_cnpj');
         const clientesRef = db.collection('clientes');
         const querySnapshot = await clientesRef.where('cpf_cnpj', '==', getCpf('cpf_cnpj')).get();
         

@@ -100,13 +100,30 @@ async function deleteClient(cpf_cnpj) {
   
   if(confirm("Tem certeza que deseja excluir o cliente?")) {
   try {
-    await db.collection('clientes').doc(cpf_cnpj).delete();
-    alert("Cliente excluído com sucesso!");
+    const clienteRef = await db.collection('clientes');
+    const querySnapshot = await clienteRef.where('cpf_cnpj', '==', cpf_cnpj).get();
+    console.log(cpf_cnpj)
+              
+    if (!querySnapshot.empty) {
+        
+        const doc = querySnapshot.docs[0];
+
+        const docId = doc.id;
+        console.log(docId);
+        
+        await db.collection('clientes').doc(docId).delete();
+          
+        alert("Cliente excluído com sucesso!");
+    } else {
+        console.log('Nenhum documento encontrado.');
+    }
+      
     window.location.reload();
   } catch (error) {
     console.error("Ocorreu um erro ao excluir o cliente:", error);
+    } 
   }
-}
+
 }
 function editClient(cpf_cnpj) {
   var width = 800;

@@ -1,15 +1,15 @@
 const express = require('express');
-const admin = require("firebase-admin");
+var admin = require("firebase-admin");
 
-const serviceAccount = require("./licencar3-firebase-adminsdk-xsgs4-d00851cb29.json");
+var serviceAccount = require("./licencar3-firebase-adminsdk-xsgs4-d00851cb29.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
 });
 
+
 const app = express();
-const port = process.env.PORT || 3000;
-const host = process.env.HOST || 'localhost';
+const port = 3000;
 
 app.get('/api/informacoes/:cpf', async (req, res) => {
   try {
@@ -25,7 +25,7 @@ app.get('/api/informacoes/:cpf', async (req, res) => {
     let userData = [];
 
     snapshot.forEach(doc => {
-      userData.push(doc.data());
+    userData.push(doc.data());
     });
 
     res.json(userData);
@@ -35,6 +35,6 @@ app.get('/api/informacoes/:cpf', async (req, res) => {
   }
 });
 
-app.listen(port, host, () => {
-  console.log(`Servidor rodando em http://${host}:${port}`);
+app.listen(port, () => {
+  console.log(`Servidor rodando em http://localhost:${port}`);
 });
