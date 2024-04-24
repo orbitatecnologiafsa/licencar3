@@ -1,0 +1,4 @@
+services:
+  - name: my-api-service
+    type: web
+    startCommand: node api.js
