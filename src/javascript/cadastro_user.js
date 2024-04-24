@@ -25,6 +25,7 @@ async function teste() {
                 }
     
                 await clientsRef.add(formData);
+                document.getElementById("client_form").reset();
                 alert('Cliente cadastrado com sucesso!')
                 console.log("Dados enviados com sucesso!");
             }
