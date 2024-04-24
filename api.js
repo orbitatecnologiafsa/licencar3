@@ -9,7 +9,7 @@ admin.initializeApp({
 
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 1000;
 
 app.get('/api/informacoes/:cpf', async (req, res) => {
   try {
