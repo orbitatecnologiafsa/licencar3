@@ -180,9 +180,17 @@ function editClient(cpf_cnpj) {
   }
 }
 function verificarLogin(){
-  firebase.auth().onAuthStateChanged(function(user) {
+  firebase.auth().onAuthStateChanged(async function(user) {
     if (user) {
       console.log("Usuário está autenticado:", user);
+      const adminDb = db.collection('admin');
+      const querySnapshot = await adminDb.get();
+
+      if (!querySnapshot.empty) {
+        const doc = querySnapshot.docs[0];
+        const userLogado = document.getElementById('userLogado');
+        userLogado.innerText = "Logado em: " + doc.data().nome;
+      }
       displayClient();
     } else {
       console.log("Usuário não está autenticado.");

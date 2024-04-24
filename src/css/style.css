@@ -163,10 +163,26 @@ input[type="submit"] {
     width: 30px;
 }
 #logout-btn{
-    background-color: #0E46A3;
-    padding: 5px;
-    border: none;
+    padding: 10px 20px;
     border-radius: 5px;
+    background-color: #0E46A3;
+    font-weight: bold;
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-self: center;
+}
+#userLogado{
+    padding: 10px 20px;
+    border-radius: 5px;
+    background-color: #0E46A3;
+    font-weight: bold;
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-self: center;
 }
 #logout-btn img{
     width: 25px;
