@@ -11,7 +11,7 @@
         <div class="header-div">
             <h1>Licença r3</h1>
             <form action="/search" method="GET">
-                <input type="text" name="q" placeholder="Digite o nome do usuário ou seu CPF..." autocomplete="off">
+                <input type="text" name="q" placeholder="Digite o nome da empresa ou cpf/cnpj" autocomplete="off">
                 <input type="submit" value="Pesquisar">
             </form>
             <button onclick="abrirCadastroUser()" class="btn_Cadastro">Cadastrar Empresa</button>
@@ -31,6 +31,25 @@
             <div class="user-grid-item">Revenda</div>
             <div class="user-grid-item">Data validade</div>
             <div class="user-grid-item">Edit/Atv/Dstvr</div>
+        </div>
+        <div class="filter-grid">
+            <div class="filter-grid-item">Filtro</div>
+            <div class="filter-grid-item">
+                <p>ID:</p>
+                <select name="" class="item-select" id="item-select-cpf_cnpj">
+                    <option>CPF/CNPJ</option>
+                    <option>CPF</option>
+                    <option>CNPJ</option>
+                </select>
+            </div>
+            <div class="filter-grid-item">
+                <p>Status:</p>
+                <select name="" class="item-select" id="item-select-ativo_desativo">
+                    <option>Ativo/Inativo</option>
+                    <option>Ativo</option>
+                    <option>Inativo</option>
+                </select>
+            </div>
         </div>
         <ul class="user-list" id="clienteLista">
         </ul>

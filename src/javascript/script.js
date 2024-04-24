@@ -9,8 +9,6 @@ async function displayClient() {
 
   try {
     snapshot.forEach(doc => {
-      //console.log(doc.data());
-
       const clienteItem = document.createElement('li');
       clienteItem.setAttribute('class','item-list');
 
@@ -65,7 +63,7 @@ async function displayClient() {
       imgDiv.appendChild(deleteImg);
       clienteItem.appendChild(imgDiv);
 
-      if(doc.data().status === 'desativo') {
+      if(doc.data().status === 'inativo'){ 
         clienteItem.setAttribute('class','desativado');
         deleteImg.setAttribute('src','src/images/check.png');
         deleteImg.setAttribute('onclick', `activeClient('${doc.data().cpf_cnpj}')`);
@@ -124,7 +122,7 @@ async function deleteClient(cpf_cnpj) {
         const docId = doc.id;
         console.log(docId);
        
-        const atualizarStatus = await db.collection('clientes').doc(docId).update({status : "desativo"});
+        const atualizarStatus = await db.collection('clientes').doc(docId).update({status : "inativo"});
         console.log(atualizarStatus);
           
         alert("Cliente desativado com sucesso!");

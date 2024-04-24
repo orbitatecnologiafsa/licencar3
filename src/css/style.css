@@ -86,7 +86,31 @@ input[type="submit"] {
     padding: 10px;
     background-color: #0E46A3;
     color: white;
-    border-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.filter-grid {
+    display: grid;
+    width: 90%;
+    border-top: 2px solid white;
+    text-align: center;
+    padding: 10px;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 10px;
+    background-color: rgba(128, 128, 128, 0.905);
+    color: white;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.filter-grid-item{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border-right: 2px solid rgb(255, 255, 255);
+}
+.filter-grid-item p{
+    font-weight: bold;
 }
 .user-grid-item {
     padding: 5px;
@@ -113,6 +137,7 @@ input[type="submit"] {
 }
 .desativado{
     width: 100%;
+    height: 70px;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-gap: 10px; 
