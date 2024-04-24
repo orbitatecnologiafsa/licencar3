@@ -181,5 +181,26 @@ function editClient(cpf_cnpj) {
       alert('Por favor, desbloqueie os popups para continuar.');
   }
 }
+function verificarLogin(){
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      console.log("Usuário está autenticado:", user);
+      displayClient();
+    } else {
+      console.log("Usuário não está autenticado.");
+      window.open('src/pages/login.html', '_self');
+    }
+  });
+}
+verificarLogin();
 
-window.onload = displayClient;
+async function logout() {
+  if (confirm("Tem certeza que deseja sair?")) {
+    try {
+      await firebase.auth().signOut();
+      window.reload;
+    } catch (error) {
+      console.error("Erro ao fazer logout:", error);
+    }
+  }
+}

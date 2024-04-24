@@ -9,8 +9,17 @@ const firebaseConfig = {
   measurementId: "G-6J8Y3R6EMY"
 };
 
-
 const app = firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 
+
+/* function signOut() {
+  firebase.auth().signOut()
+    .then(() => {
+      console.log("Usuário desconectado.");
+    })
+    .catch((error) => {
+      console.error("Erro ao desconectar:", error);
+    });
+} */

@@ -14,12 +14,13 @@
                 <input type="text" name="q" placeholder="Digite o nome do usuário ou seu CPF..." autocomplete="off">
                 <input type="submit" value="Pesquisar">
             </form>
-            <button onclick="abrirCadastroUser()" class="btn_Cadastro">Cadastrar cliente</button>
+            <button onclick="abrirCadastroUser()" class="btn_Cadastro">Cadastrar Empresa</button>
+            <button onclick="logout()"id="logout-btn"><img src="src/images/logout_ico.png" alt="" class="icon"></button>
         </div>
     </header>
     <section class="user-container">
         <div class="user-div-title">
-            <h1>Usuários cadastrados</h1>
+            <h1>Empresas cadastradas</h1>
         </div>
 
         <div class="user-grid">
@@ -36,6 +37,7 @@
     </section>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
     <script src="src/javascript/firebase.js"></script>
     <script src="src/javascript/script.js"></script>
 </body>
