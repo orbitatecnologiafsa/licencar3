@@ -23,6 +23,15 @@ body{
     cursor: pointer;
     font-weight: bold;
 }
+.logo-div{
+    display: flex;
+    align-items:last center;
+    justify-content: center;
+    height: 100%;
+}
+#logo{
+    width: 150px;
+}
 .header{
     background-color: #1E0342;
     width: 100%;
