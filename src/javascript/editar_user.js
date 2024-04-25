@@ -18,6 +18,7 @@ async function exibir_info(){
 
     if (querySnapshot.empty) {
         console.log('Nenhum documento encontrado.');
+       
     } else {
         const doc = querySnapshot.docs[0];
         console.log('Document data:', doc.data());

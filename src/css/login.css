@@ -48,7 +48,13 @@ textarea:focus,
 select:focus {
     outline: none;
 }
-  
+.logo{
+  width: 250px;
+  background-color: #1E0342;
+  border-radius: 25px;
+  padding: 5px;
+  margin-bottom: 20px;
+}
 button {
   width: 60%;
   margin-top: 30px;

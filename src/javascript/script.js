@@ -5,9 +5,9 @@ async function displayClient() {
 
   const clienteRef = db.collection('clientes');
   const clienteLista = document.getElementById('clienteLista');
-  const snapshot = await clienteRef.get();
 
   try {
+    const snapshot = await clienteRef.orderBy('nome').get();
     snapshot.forEach(doc => {
       const clienteItem = document.createElement('li');
       clienteItem.setAttribute('class','item-list');
@@ -63,7 +63,7 @@ async function displayClient() {
       imgDiv.appendChild(deleteImg);
       clienteItem.appendChild(imgDiv);
 
-      if(doc.data().status === 'inativo'){ 
+      if(doc.data().status === 'INATIVO'){ 
         clienteItem.setAttribute('class','desativado');
         deleteImg.setAttribute('src','src/images/check.png');
         deleteImg.setAttribute('onclick', `activeClient('${doc.data().cpf_cnpj}')`);
@@ -122,7 +122,7 @@ async function deleteClient(cpf_cnpj) {
         const docId = doc.id;
         console.log(docId);
        
-        const atualizarStatus = await db.collection('clientes').doc(docId).update({status : "inativo"});
+        const atualizarStatus = await db.collection('clientes').doc(docId).update({status : "INATIVO"});
         console.log(atualizarStatus);
           
         alert("Cliente desativado com sucesso!");
@@ -151,7 +151,7 @@ async function activeClient(cpf_cnpj) {
         const docId = doc.id;
         console.log(docId);
         
-        const atualizarStatus = await db.collection('clientes').doc(docId).update({status : "ativo"});
+        const atualizarStatus = await db.collection('clientes').doc(docId).update({status : "ATIVO"});
         console.log(atualizarStatus);
           
         alert("Cliente ativado com sucesso!");
@@ -191,6 +191,7 @@ function verificarLogin(){
         const userLogado = document.getElementById('userLogado');
         userLogado.innerText = "Logado em: " + doc.data().nome;
       }
+      const pesquisa = document.getElementById('pesquisa').value;
       displayClient();
     } else {
       console.log("Usuário não está autenticado.");
@@ -198,6 +199,113 @@ function verificarLogin(){
     }
   });
 }
+
+async function pesquisar(event) {
+
+  event.preventDefault();
+
+  const pesquisa = document.getElementById('pesquisa').value.toUpperCase();
+
+  if(pesquisa == ""){
+    displayClient();
+    return;
+  }
+  const clienteRef = db.collection('clientes');
+  let clientePesquisado = await clienteRef.where('cpf_cnpj', '==', pesquisa).get();
+  document.getElementById('clienteLista').innerHTML = '';
+
+  if (clientePesquisado.empty) {
+    clientePesquisado = await clienteRef.where('nome', '==', pesquisa).get(); //pesquisa por nome
+    if(clientePesquisado.empty){
+      clientePesquisado = await clienteRef.where('revenda', '==', pesquisa).get(); //pesquisa por revenda
+      if(clientePesquisado.empty){
+        clientePesquisado = await clienteRef.where('cidade', '==', pesquisa).get(); //pesquisa por cidade
+        if(clientePesquisado.empty){
+          clientePesquisado = await clienteRef.where('status', '==', pesquisa).get(); //pesquisa por status
+          if (clientePesquisado.empty) {
+            console.log('Nenhuma empresa encontrada.');
+            alert('Nenhuma empresa encontrada');
+            displayClient();
+            return;
+          }
+        }
+      }     
+    }
+  }
+  clientePesquisado.forEach((doc) => {
+    console.log(doc.id, " => ", doc.data());
+    const clienteItem = document.createElement('li');
+    clienteItem.setAttribute('class','item-list')
+
+    const itemNome = document.createElement('p');
+    itemNome.setAttribute('class','item')
+    itemNome.textContent = `${doc.data().nome}`;
+
+    const itemCpf_cnpj = document.createElement('p');
+    itemCpf_cnpj.setAttribute('class', 'item');
+    const cpf_cnpj = doc.data().cpf_cnpj;
+    const cpf_cnpj_formatado = formatarCPFouCNPJ(cpf_cnpj);
+    itemCpf_cnpj.textContent = `${cpf_cnpj_formatado}`;
+
+    const itemEndereco = document.createElement('p');
+    itemEndereco.setAttribute('class','item');
+    itemEndereco.textContent = `${doc.data().endereco}`;
+
+    const itemCidade = document.createElement('p');
+    itemCidade.setAttribute('class','item');
+    itemCidade.textContent = `${doc.data().cidade}`;
+
+    const itemRevenda = document.createElement('p');
+    itemRevenda.setAttribute('class','item');
+    itemRevenda.textContent = `${doc.data().revenda}`;
+
+    const itemData_validade = document.createElement('p');
+    itemData_validade.setAttribute('class','item');
+    itemData_validade.textContent = `${doc.data().data_validade}`;
+
+    const imgDiv = document.createElement('div');
+    imgDiv.setAttribute('class','img-div');
+
+    const deleteImg = document.createElement('img');
+    deleteImg.setAttribute('class','icon');
+    deleteImg.setAttribute('id','deleteImg');
+    deleteImg.setAttribute('onclick', `deleteClient('${doc.data().cpf_cnpj}')`);
+
+    const editImg = document.createElement('img');
+    editImg.setAttribute('class','icon');
+    editImg.setAttribute('src','src/images/edit.png');
+    editImg.setAttribute('onclick', `editClient('${doc.data().cpf_cnpj}')`);
+
+    imgDiv.appendChild(editImg);
+    imgDiv.appendChild(deleteImg);
+    clienteItem.appendChild(imgDiv);
+
+    if(doc.data().status === 'INATIVO'){ 
+      clienteItem.setAttribute('class','desativado');
+      deleteImg.setAttribute('src','src/images/check.png');
+      deleteImg.setAttribute('onclick', `activeClient('${doc.data().cpf_cnpj}')`);
+    }
+    else{
+      clienteItem.setAttribute('class','item-list');
+      deleteImg.setAttribute('src','src/images/remove.png');
+      deleteImg.setAttribute('onclick', `deleteClient('${doc.data().cpf_cnpj}')`);
+    }
+
+    clienteItem.appendChild(itemNome);
+    clienteItem.appendChild(itemCpf_cnpj);
+    clienteItem.appendChild(itemEndereco);
+    clienteItem.appendChild(itemCidade);
+    clienteItem.appendChild(itemRevenda);
+    clienteItem.appendChild(itemData_validade);
+    clienteItem.appendChild(imgDiv);
+
+    const clienteLista = document.getElementById('clienteLista');
+    clienteLista.appendChild(clienteItem);
+
+    document.getElementById('pesquisa').value = '';
+  })
+}
+document.getElementById('form_pesquisa').addEventListener('submit', pesquisar);
 verificarLogin();
 
 async function logout() {

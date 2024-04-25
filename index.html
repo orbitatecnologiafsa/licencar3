@@ -10,10 +10,10 @@
     <header class="header">
         <div class="header-div">
             <div class="logo-div">
-                <img src="src/images/logo_orbita-transparente.png" id="logo">
+                <a href="index.html"><img src="src/images/logo_orbita-transparente.png" id="logo"></a>
             </div>
-            <form action="/search" method="GET">
-                <input type="text" name="q" placeholder="Digite o nome da empresa ou cpf/cnpj" autocomplete="off">
+            <form id="form_pesquisa">
+                <input type="text" name="q" placeholder="Digite o nome da empresa ou cpf/cnpj" autocomplete="off" id="pesquisa">
                 <input type="submit" value="Pesquisar">
             </form>
             <button onclick="abrirCadastroUser()" class="btn_Cadastro">Cadastrar Empresa</button>
