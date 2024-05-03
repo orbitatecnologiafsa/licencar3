@@ -167,7 +167,7 @@ async function pesquisar(event) {
           if (clientePesquisado.empty) {
             console.log('Nenhuma empresa encontrada.');
             alert('Nenhuma empresa encontrada');
-            displayClient();
+            exibirElementos(listaCompleta, paginaAtual);
             return;
           }
         }
