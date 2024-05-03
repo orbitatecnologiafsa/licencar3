@@ -1,81 +1,24 @@
-
+const listaCompleta = []
 async function displayClient() {
 
-
   const clienteRef = db.collection('clientes');
-  const clienteLista = document.getElementById('clienteLista');
-
   try {
     const snapshot = await clienteRef.orderBy('nome').get();
     snapshot.forEach(doc => {
-      const clienteItem = document.createElement('li');
-      clienteItem.setAttribute('class','item-list');
-
-      const itemNome = document.createElement('p');
-      itemNome.setAttribute('class','item')
-      itemNome.textContent = `${doc.data().nome}`;
-      clienteItem.appendChild(itemNome);
-
-      const itemCpf_cnpj = document.createElement('p');
-      itemCpf_cnpj.setAttribute('class', 'item');
-      const cpf_cnpj = doc.data().cpf_cnpj;
-      const cpf_cnpj_formatado = formatarCPFouCNPJ(cpf_cnpj);
-
-      itemCpf_cnpj.textContent = cpf_cnpj_formatado;
-      clienteItem.appendChild(itemCpf_cnpj);
-
-      const itemEndereco = document.createElement('p');
-      itemEndereco.setAttribute('class','item');
-      itemEndereco.textContent = `${doc.data().endereco}`;
-      clienteItem.appendChild(itemEndereco);
-
-      const itemCidade = document.createElement('p');
-      itemCidade.setAttribute('class','item');
-      itemCidade.textContent = `${doc.data().cidade}`;
-      clienteItem.appendChild(itemCidade);
-
-      const itemRevenda = document.createElement('p');
-      itemRevenda.setAttribute('class','item');  
-      itemRevenda.textContent = `${doc.data().revenda}`;
-      clienteItem.appendChild(itemRevenda);
-
-      const itemData = document.createElement('p');
-      itemData.setAttribute('class','item');
-      itemData.textContent = `${doc.data().data_validade}`;
-      clienteItem.appendChild(itemData);
-
-      const imgDiv = document.createElement('div');
-      imgDiv.setAttribute('class','img-div');
-
-      const deleteImg = document.createElement('img');
-      deleteImg.setAttribute('class','icon');
-      deleteImg.setAttribute('id','deleteImg');
-      deleteImg.setAttribute('src','src/images/remove.png');
-      deleteImg.setAttribute('onclick', `deleteClient('${doc.data().cpf_cnpj}')`);
-
-      const editImg = document.createElement('img');
-      editImg.setAttribute('class','icon');
-      editImg.setAttribute('src','src/images/edit.png');
-      editImg.setAttribute('onclick', `editClient('${doc.data().cpf_cnpj}')`);
-
-      imgDiv.appendChild(editImg);
-      imgDiv.appendChild(deleteImg);
-      clienteItem.appendChild(imgDiv);
-
-      if(doc.data().status === 'INATIVO'){ 
-        clienteItem.setAttribute('class','desativado');
-        deleteImg.setAttribute('src','src/images/check.png');
-        deleteImg.setAttribute('onclick', `activeClient('${doc.data().cpf_cnpj}')`);
-      }
-      else{
-        clienteItem.setAttribute('class','item-list');
-        deleteImg.setAttribute('src','src/images/remove.png');
-        deleteImg.setAttribute('onclick', `deleteClient('${doc.data().cpf_cnpj}')`);
-      }
-
-      clienteLista.appendChild(clienteItem);   
-        
-    });
+  
+      const cliente = {
+          nome: doc.data().nome,
+          cpf_cnpj: formatarCPFouCNPJ(doc.data().cpf_cnpj),
+          endereco: doc.data().endereco,
+          cidade: doc.data().cidade,
+          revenda: doc.data().revenda,
+          status: doc.data().status,
+          data_validade: doc.data().data_validade
+      };
+      listaCompleta.push(cliente); 
+      exibirElementos(listaCompleta, paginaAtual);
+      exibirPaginacao(listaCompleta);
+  });
   } catch(error) {
     console.log("A lista está vazia, erro: " + error);
   }
@@ -316,4 +259,119 @@ async function logout() {
       console.error("Erro ao fazer logout:", error);
     }
   }
+}
+
+const elementosPorPagina = 10;
+let paginaAtual = 1;
+
+function exibirElementos(lista, pagina) {
+
+  
+  const startIndex = (pagina - 1) * elementosPorPagina;
+  const endIndex = startIndex + elementosPorPagina;
+
+  console.log("Lista:", lista);
+  console.log("startIndex:", startIndex);
+  console.log("endIndex:", endIndex);
+  const elementosDaPagina = lista.slice(startIndex, endIndex);
+
+  console.log("elementos da pagina: ", elementosDaPagina);
+
+  const clienteLista = document.getElementById('clienteLista');
+  clienteLista.innerHTML = ''; 
+
+  elementosDaPagina.forEach(cliente => {
+
+    console.log(cliente);
+      const clienteItem = document.createElement('li');
+      clienteItem.setAttribute('class','item-list');
+
+      const itemNome = document.createElement('p');
+      itemNome.setAttribute('class','item');
+      itemNome.textContent = cliente.nome;
+      
+      clienteItem.appendChild(itemNome);
+
+      const itemCpf_cnpj = document.createElement('p');
+      itemCpf_cnpj.setAttribute('class', 'item');
+      itemCpf_cnpj.textContent = cliente.cpf_cnpj;
+      clienteItem.appendChild(itemCpf_cnpj);
+
+      const itemEndereco = document.createElement('p');
+      itemEndereco.setAttribute('class','item');
+      itemEndereco.textContent = cliente.endereco;
+      clienteItem.appendChild(itemEndereco);
+
+      const itemCidade = document.createElement('p');
+      itemCidade.setAttribute('class','item');
+      itemCidade.textContent = cliente.cidade;
+      clienteItem.appendChild(itemCidade);
+
+      const itemRevenda = document.createElement('p');
+      itemRevenda.setAttribute('class','item');
+      itemRevenda.textContent = cliente.revenda;
+      clienteItem.appendChild(itemRevenda);
+
+      const itemData = document.createElement('p');
+      itemData.setAttribute('class','item');
+      itemData.textContent = cliente.data_validade;
+      clienteItem.appendChild(itemData);
+
+      const imgDiv = document.createElement('div');
+      imgDiv.setAttribute('class','img-div');
+
+      const deleteImg = document.createElement('img');
+      deleteImg.setAttribute('class','icon');
+      deleteImg.setAttribute('id','deleteImg');
+      deleteImg.setAttribute('onclick', `deleteClient('${cliente.cpf_cnpj}')`);
+
+      const editImg = document.createElement('img');
+      editImg.setAttribute('class','icon');
+      editImg.setAttribute('src','src/images/edit.png');
+      editImg.setAttribute('onclick', `editClient('${cliente.cpf_cnpj}')`);
+
+      imgDiv.appendChild(editImg);
+      imgDiv.appendChild(deleteImg);
+      clienteItem.appendChild(imgDiv);
+
+      if(cliente.status === 'INATIVO'){ 
+        clienteItem.setAttribute('class','desativado');
+        deleteImg.setAttribute('src','src/images/check.png');
+        deleteImg.setAttribute('onclick', `activeClient('${cliente.cpf_cnpj}')`);
+      }
+      else{
+        clienteItem.setAttribute('class','item-list');
+        deleteImg.setAttribute('src','src/images/remove.png');
+        deleteImg.setAttribute('onclick', `deleteClient('${cliente.cpf_cnpj}')`);
+      }
+      clienteLista.appendChild(clienteItem);
+  });
+}
+
+function exibirPaginacao(lista) {
+    const numeroDePaginas = Math.ceil(lista.length / elementosPorPagina);
+    let paginationHtml = '';
+
+    for (let i = 1; i <= numeroDePaginas; i++) {
+        paginationHtml += `<button onclick="irParaPagina(${i})" class="botao-paginacao">${i}</button>`;
+    }
+
+    document.getElementById('pagination').innerHTML = paginationHtml;
+}
+
+function irParaPagina(pagina) {
+  paginaAtual = pagina;
+  exibirElementos(listaCompleta, pagina);
+  atualizarPaginacao();
+}
+
+function atualizarPaginacao() {
+    const botoesPaginacao = document.querySelectorAll('#pagination button');
+    botoesPaginacao.forEach((botao, indice) => {
+        if (indice + 1 === paginaAtual) {
+            botao.classList.add('ativo');
+        } else {
+            botao.classList.remove('ativo');
+        }
+    });
 }
