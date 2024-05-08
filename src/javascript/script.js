@@ -149,7 +149,7 @@ async function pesquisar(event) {
   const pesquisa = document.getElementById('pesquisa').value.toUpperCase();
 
   if(pesquisa == ""){
-    displayClient();
+    window.location.reload();
     return;
   }
   const clienteRef = db.collection('clientes');
