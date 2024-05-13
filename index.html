@@ -36,23 +36,11 @@
             <div class="user-grid-item">Edit/Atv/Dstvr</div>
         </div>
         <div class="filter-grid">
-            <div class="filter-grid-item">Filtro</div>
             <div class="filter-grid-item">
-                <p>ID:</p>
-                <select name="" class="item-select" id="item-select-cpf_cnpj">
-                    <option>CPF/CNPJ</option>
-                    <option>CPF</option>
-                    <option>CNPJ</option>
-                </select>
-            </div>
-            <div class="filter-grid-item">
-                <p>Status:</p>
-                <select name="" class="item-select" id="item-select-ativo_desativo">
-                    <option>Ativo/Inativo</option>
-                    <option>Ativo</option>
-                    <option>Inativo</option>
-                </select>
-            </div>
+                <p>Aplicar Data a Todos:</p>
+                <input type="date" id="nova_data">
+                <button onclick="aplicarDataTodos()">Aplicar</button>
+            </div> 
         </div>
         <div class="container">
             <ul class="user-list" id="clienteLista"></ul>

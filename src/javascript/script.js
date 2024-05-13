@@ -359,6 +359,21 @@ function exibirPaginacao(lista) {
     document.getElementById('pagination').innerHTML = paginationHtml;
 }
 
+async function aplicarDataTodos(){
+
+  const empresasDb = db.collection('clientes');
+  const empresas = await empresasDb.get();
+
+  empresas.forEach((doc) => {
+    const empresa = doc.data();
+    const data = document.getElementById("nova_data").value;
+    empresa.data_validade = data;
+    console.log(empresa.data_validade);
+    empresasDb.doc(doc.id).update(empresa);
+    window.location.reload();
+  })
+}
+
 function irParaPagina(pagina) {
   paginaAtual = pagina;
   exibirElementos(listaCompleta, pagina);
