@@ -104,7 +104,7 @@ input[type="submit"] {
     border-top: 2px solid white;
     text-align: center;
     padding: 10px;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-gap: 10px;
     background-color: rgba(128, 128, 128, 0.905);
     color: white;
@@ -133,6 +133,10 @@ input[type="submit"] {
 .user-grid-item {
     padding: 5px;
     font-weight: bold;
+    
+}
+.user-grid-item:not(:last-child){
+    border-right: 2px solid white;
 }
 
 .user-list{

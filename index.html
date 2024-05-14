@@ -37,10 +37,15 @@
         </div>
         <div class="filter-grid">
             <div class="filter-grid-item">
-                <p>Aplicar Data a Todos:</p>
-                <input type="date" id="nova_data">
+                <p>Extender Números de Dias</p>
+                <input type="number" id="nova_data">
                 <button onclick="aplicarDataTodos()">Aplicar</button>
             </div> 
+            <div class="filter-grid-item">
+                <p>Definir Data para Todos</p>
+                <input type="date" id="nova_data2">
+                <button onclick="definirDataTodos()">Aplicar</button>
+            </div>
         </div>
         <div class="container">
             <ul class="user-list" id="clienteLista"></ul>

@@ -13,7 +13,7 @@ async function displayClient() {
           cidade: doc.data().cidade,
           revenda: doc.data().revenda,
           status: doc.data().status,
-          data_validade: doc.data().data_validade
+          data_validade: formatarData(doc.data().data_validade_stamp)
       };
       listaCompleta.push(cliente); 
       exibirElementos(listaCompleta, paginaAtual);
@@ -35,6 +35,17 @@ function formatarCPFouCNPJ(cpf_cnpj) {
   } else {
       return cpf_cnpj; 
   }
+}
+
+function formatarData(timestamp){
+
+  const data = new Date(timestamp);
+  const dia = data.getDate().toString().padStart(2, '0'); // PadStart adiciona um zero à esquerda se necessário
+  const mes = (data.getMonth() + 1).toString().padStart(2, '0'); // Mês começa do zero, então adicionamos 1
+  const ano = data.getFullYear();
+
+  const dataFormatada = `${dia}/${mes}/${ano}`;
+  return dataFormatada;
 }
 
 function abrirCadastroUser() {
@@ -359,19 +370,40 @@ function exibirPaginacao(lista) {
     document.getElementById('pagination').innerHTML = paginationHtml;
 }
 
-async function aplicarDataTodos(){
+async function aplicarDataTodos() {
 
+  const dataInput = document.getElementById("nova_data").value;
+  const dataConvertida = dataInput * 24 * 60 * 60 * 1000; 
+  
   const empresasDb = db.collection('clientes');
   const empresas = await empresasDb.get();
 
-  empresas.forEach((doc) => {
-    const empresa = doc.data();
-    const data = document.getElementById("nova_data").value;
-    empresa.data_validade = data;
-    console.log(empresa.data_validade);
-    empresasDb.doc(doc.id).update(empresa);
-    window.location.reload();
-  })
+  for (const doc of empresas.docs) {
+    console.log(doc.id, '=>', doc.data());
+    const dataValidadeAtual = doc.data().data_validade_stamp || 0; 
+    const dataObj = new Date(dataValidadeAtual);
+    const somaData = dataObj.getTime() + dataConvertida;
+    await empresasDb.doc(doc.id).update({ data_validade_stamp: somaData });
+  }
+  window.location.reload();
+}
+
+async function definirDataTodos(){
+
+  const empresasDb = db.collection('clientes');
+  const novaData  = document.getElementById('nova_data2').value;
+
+  const novaDataStamp = new Date(novaData);
+  const timestamp = novaDataStamp.getTime();
+  const timestamp2 = timestamp + 86400000
+
+  const empresas = await empresasDb.get();
+
+  for (const doc of empresas.docs) {
+    console.log(doc.id, '=>', doc.data());
+    await empresasDb.doc(doc.id).update({ data_validade_stamp: timestamp2 });
+  }
+  window.location.reload();
 }
 
 function irParaPagina(pagina) {

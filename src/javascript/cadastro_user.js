@@ -8,6 +8,7 @@ async function teste() {
             e.preventDefault();
             const data = new FormData(e.target);
             const cpf = data.get("cpf_cnpj");
+            const data_validade = new Date(data.get("data_validade")).getTime(); 
 
             const querySnapshot = await clientsRef.where("cpf_cnpj", "==", cpf).get();
 
@@ -23,6 +24,7 @@ async function teste() {
                     formData[key] = value;
                     formData["status"] = "ATIVO";
                 }
+                formData["data_validade_stamp"] = data_validade;
     
                 await clientsRef.add(formData);
                 document.getElementById("client_form").reset();
