@@ -422,3 +422,14 @@ function atualizarPaginacao() {
         }
     });
 }
+
+function exportarListaParaXLS() {
+  const data = listaCompleta;
+  const worksheet = XLSX.utils.json_to_sheet(data);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Clientes');
+  const dataHoje = new Date();
+  XLSX.writeFile(workbook, 'clientes' + dataHoje + '.xlsx');
+
+  return;
+}

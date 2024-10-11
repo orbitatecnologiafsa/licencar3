@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="src/css/style.css">
     <title>Licença r3</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 </head>
 <body>
     <header class="header">
@@ -45,6 +46,10 @@
                 <p>Definir Data para Todos</p>
                 <input type="date" id="nova_data2">
                 <button onclick="definirDataTodos()">Aplicar</button>
+            </div>
+            <div class="filter-grid-item">
+                <p>Exportar XLS</p>
+                <button onclick="exportarListaParaXLS()">Exportar</button>
             </div>
         </div>
         <div class="container">
